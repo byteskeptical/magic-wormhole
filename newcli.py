@@ -163,6 +163,8 @@ class SendProtocol(Protocol):
     def connectionMade(self):
         print("SendProtocol.connectionMade")
         header_bytes = dict_to_bytes(self._header)
+        header_size = len(header_bytes)
+        self.transport.write(to_be8(header_size))
         self.transport.write(header_bytes)
         hasher = hashlib.sha256()
         progress = tqdm(file=sys.stderr, disable=False,
